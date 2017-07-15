@@ -1,12 +1,63 @@
-var board = document.querySelector("#board");
+var htmlGrid = document.querySelector("#grid");
+var rows = document.querySelectorAll("tr");
+var cells = document.querySelectorAll("td");
+var reset = document.querySelector("#reset");
 
-board.addEventListener("click", game, false);
+var myMove = false;
+var gridArray = [];
 
-function game(e){
+var board = [
+
+  [null, null, null],
+  [null, null, null],
+  [null, null, null]
+
+];
+
+// turn the table cells into an array
+for (var i = 0; i < rows.length; i++){
+  console.log(rows[i]);
+  gridArray.push(rows[i].querySelectorAll("td"));
+}
+
+// listen for clicks on the board
+htmlGrid.addEventListener("click", gameInit);
+
+function gameInit(e){
   if (e.target !== e.currentTarget){
-    console.log("click");
-    e.target.innerHTML = "X";
+
+    if (e.target === c00) {
+      board[0][0] = 1;
+      e.target.innerHTML = "X";
+    }
+
+
+
 
 
   }
 }
+
+
+
+// reset the game
+function restartGame() {
+
+  board = [
+
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+
+  ];
+
+  // loop through all cells and clear moves
+  for (var i = 0; i < cells.length; i++){
+    cells[i].innerHTML = "";
+  }
+
+  console.log("game reset");
+
+}
+
+reset.addEventListener("click", restartGame);
