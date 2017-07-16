@@ -27,37 +27,43 @@ User stories:
 
   <div class="container">
 
-    <table id="grid">
-      <tr id="row1">
-        <td id="c00"></td>
-        <td id="c01"></td>
-        <td id="c02"></td>
-      </tr>
-      <tr id="row2">
-        <td id="c10"></td>
-        <td id="c11"></td>
-        <td id="c12"></td>
-      </tr>
-      <tr id="row3">
-        <td id="c20"></td>
-        <td id="c21"></td>
-        <td id="c22"></td>
-      </tr>
-    </table>
+    <div class="grid">
+      <div id="rowOne" class="row">
+        <div id="c00" class="cell"></div>
+        <div id="c01" class="cell"></div>
+        <div id="c02" class="cell"></div>
+      </div>
+      <div id="rowTwo" class="row">
+        <div id="c10" class="cell"></div>
+        <div id="c11" class="cell"></div>
+        <div id="c12" class="cell"></div>
+      </div>
+      <div id="rowThree" class="row">
+        <div id="c20" class="cell"></div>
+        <div id="c21" class="cell"></div>
+        <div id="c22" class="cell"></div>
+      </div>
+    </div>
+
+    <div class="align-center">
+      <h2 id="reset">Reset</h2>
+    </div>
 
     <div class="welcome">
       <div class="content align-center">
-        <h2>Do you want to be X or O?</h2>
-        <h2 id="reset">Reset</h2>
+        <h2>Choose Player</h2>
+        <button>X</button>
+        <button>O</button>
       </div>
     </div>
+
 
   </div>
 
 
 
 
-<script type="text/javascript" src="script.js"></script>
+  <script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>

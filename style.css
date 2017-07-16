@@ -16,31 +16,21 @@ padding-top:2rem;
   height:200px;
 }
 
-/* CSS for the board */
+/* CSS for board */
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.grid {
+  text-align:center;
 }
-td {
-  width: 33.333%;
-  border: 6px solid #000;
+
+.row {
+  display:flex;
+
 }
-td:after {
-  content: '';
-  display: block;
-  margin-top: 100%;
+
+.row > div {
+  width:130px;
+  height:130px;
+  background-color:rgb(156, 222, 125);
+  cursor:pointer;
+  margin:1px;
 }
-td:first-of-type {
-  border-left-color: transparent;
-  border-top-color: transparent;
-}
-td:nth-of-type(2) {
-  border-top-color: transparent;
-}
-td:nth-of-type(3) {
-  border-right-color: transparent;
-  border-top-color: transparent;
-}
-tr:nth-of-type(3) td {
-  border-bottom-color: transparent;
