@@ -9,17 +9,12 @@ var reset = document.querySelector("#reset");
 // app variables
 var player = null;
 var computer = null;
-var playerTurn = false;
-
-var myMove = false;
-var gridArray = [];
-
 
 var board = [
 
-  [null, null, null],
-  [null, null, null],
-  [null, null, null]
+  null, null, null,
+  null, null, null,
+  null, null, null
 
 ];
 
@@ -52,31 +47,31 @@ function gameInit(e) {
     e.target.innerHTML = player;
 
     if (e.target === c00){
-      board[0][0] = player;
+      board[1] = player;
     }
     if (e.target === c01){
-      board[0][1] = player;
+      board[2] = player;
     }
     if (e.target === c02){
-      board[0][2] = player;
+      board[3] = player;
     }
     if (e.target === c10){
-      board[1][0] = player;
+      board[4] = player;
     }
     if (e.target === c11){
-      board[1][1] = player;
+      board[5] = player;
     }
     if (e.target === c12){
-      board[1][2] = player;
+      board[6] = player;
     }
     if (e.target === c20){
-      board[2][0] = player;
+      board[7] = player;
     }
     if (e.target === c21){
-      board[2][1] = player;
+      board[8] = player;
     }
     if (e.target === c22){
-      board[2][2] = player;
+      board[9] = player;
     }
 
     declareWinner();
@@ -87,20 +82,41 @@ function gameInit(e) {
 // declare the winner
 function declareWinner() {
 
-    // horizontal
-    if (board[0].includes(null) === false && board[0][0] === board[0][1] && board[0][1] === board[0][2]){
-     announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+    // horizontal & vertical
+    for (var i = 0; i < 9; i++){
+      if (board[i] !== null && board[i] === board[i + 1] && board[i + 1] === board[i + 2] || board[i] !== null && board[i] === board[i + 3] && board[i + 3] === board[i + 6]){
+         announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+      }
     }
-    if (board[1].includes(null) === false && board[1][0] === board[1][1] && board[1][1] === board[1][2]){
-     announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-    }
-    if (board[2].includes(null) === false && board[2][0] === board[2][1] && board[2][1] === board[2][2]){
-     announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-    }
+
+
+    // if (board[1] === board[2] && board[2] === board[3] && board[1] === board[3]){
+    //  announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+    // }
+    // if (board[4] === board[5] && board[5] === board[6]){
+    //  announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+    // }
+    // if (board[7] === board[8] && board[8] === board[9]){
+    //  announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+    // }
 
     // vertical
 
+    // for (var i = 0; i < 9; i++){
+    //   if (board[i] !== null && board[i] === board[i + 3] && board[i + 3] === board[i + 6]){
+    //      announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+    //   }
+    // }
+
+
+
     // diagonal
+
+    for (var j = 0; j < 9; j++){
+      if (board[j] !== null && board[j] === board[j + 4] && board[j + 4] === board[j + 8]) {
+         announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+      }
+    }
 
 }
 
@@ -109,9 +125,9 @@ function restartGame() {
 
   board = [
 
-    [null, null, null],
-    [null, null, null],
-    [null, null, null]
+    null, null, null,
+    null, null, null,
+    null, null, null
 
   ];
 
