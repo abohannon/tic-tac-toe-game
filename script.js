@@ -2,6 +2,8 @@
 var htmlGrid = document.querySelector(".grid");
 var cells = document.querySelectorAll(".cell");
 var playerSelect = document.querySelector(".welcome");
+var announceWinner = document.querySelector("#winner-msg");
+var scoreboard = document.querySelector(".scoreboard");
 var reset = document.querySelector("#reset");
 
 // app variables
@@ -28,13 +30,13 @@ function choosePlayer(e) {
   if (e.target !== e.currentTarget) {
 
     if (e.target.innerHTML === "X") {
-      player = "X";
-      computer = "O";
+      player = playerChar.innerHTML = "X";
+      computer = computerChar.innerHTML = "O";
 
     }
     if (e.target.innerHTML === "O") {
-      player = "O";
-      computer = "X";
+      player = playerChar.innerHTML = "O";
+      computer = computerChar.innerHTML = "X";
 
     }
 
@@ -46,7 +48,6 @@ htmlGrid.addEventListener("click", gameInit);
 
 function gameInit(e) {
   if (e.target !== e.currentTarget) {
-    console.log(e.target);
 
     e.target.innerHTML = player;
 
@@ -78,7 +79,6 @@ function gameInit(e) {
       board[2][2] = player;
     }
 
-
     declareWinner();
 
   }
@@ -89,20 +89,20 @@ function declareWinner() {
 
     // horizontal
     if (board[0].includes(null) === false && board[0][0] === board[0][1] && board[0][1] === board[0][2]){
-      console.log("winner");
+     announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+    }
+    if (board[1].includes(null) === false && board[1][0] === board[1][1] && board[1][1] === board[1][2]){
+     announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
+    }
+    if (board[2].includes(null) === false && board[2][0] === board[2][1] && board[2][1] === board[2][2]){
+     announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
     }
 
     // vertical
 
     // diagonal
 
-
 }
-
-
-
-
-
 
 // reset the game
 function restartGame() {
@@ -119,6 +119,8 @@ function restartGame() {
   for (var i = 0; i < cells.length; i++) {
     cells[i].innerHTML = "";
   }
+
+  announceWinner.innerHTML = "";
 
   console.log("game reset");
 

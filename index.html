@@ -20,6 +20,7 @@ User stories:
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
   <title>Adam's Tic Tac Toe Game</title>
 </head>
 
@@ -27,7 +28,7 @@ User stories:
 
   <div class="container">
 
-    <div class="grid">
+    <div class="grid content">
       <div id="rowOne" class="row">
         <div id="c00" class="cell"></div>
         <div id="c01" class="cell"></div>
@@ -45,15 +46,28 @@ User stories:
       </div>
     </div>
 
-    <div class="align-center">
-      <h2 id="reset">Reset</h2>
+    <div id="winner-msg" class="content align-center"><h2></h2></div>
+
+    <div class="content align-center">
+      <button id="reset">Reset Game</button>
     </div>
 
-    <div class="welcome">
+    <div class="content scoreboard">
+      <div>
+        <h2>Player</h2>
+        <h2 id="playerChar">#</h2>
+      </div>
+      <div>
+        <h2>Computer</h2>
+        <h2 id="computerChar">#</h2>
+      </div>
+    </div>
+
+    <div class="content welcome">
       <div class="content align-center">
         <h2>Choose Player</h2>
-        <button>X</button>
-        <button>O</button>
+        <button id="playerX">X</button>
+        <button id="playerO">O</button>
       </div>
     </div>
 

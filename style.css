@@ -1,3 +1,7 @@
+body{
+  font-family: 'Lato', sans-serif;
+}
+
 .container {
 width:400px;
 margin-left:auto;
@@ -9,6 +13,32 @@ padding-top:2rem;
   text-align: center;
 }
 
+button {
+  padding: 5px 10px 5px 10px;
+  border-radius:3px;
+  outline: none;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+}
+
+button:active {
+      transform: translateY(4px);
+}
+
+.scoreboard {
+  display:flex;
+  text-align:center;
+}
+
+.scoreboard > div {
+  flex:1;
+}
+
+.content {
+  margin-bottom:2rem;
+}
+
 /* CSS for welcome screen */
 
 .welcome {
@@ -16,10 +46,11 @@ padding-top:2rem;
   height:200px;
 }
 
-/* CSS for board */
+/* CSS for game board */
 
 .grid {
   text-align:center;
+  margin-bottom:2rem;
 }
 
 .row {
@@ -33,4 +64,10 @@ padding-top:2rem;
   background-color:rgb(156, 222, 125);
   cursor:pointer;
   margin:1px;
+  border-radius:3px;
+  display:flex;
+  justify-content:center;
+  flex-direction:column;
+  font-size:72px;
+  color:white;
 }
