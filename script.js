@@ -7,19 +7,24 @@ var scoreboard = document.querySelector(".scoreboard");
 var reset = document.querySelector("#reset");
 
 // app variables
-var player = null;
-var computer = null;
+var player = "";
+var computer = "";
+var turn = "";
+var moves = 0; //TODO: counting but haven't used yet
+var gameSession = false;
 
-var board = [
+var boardArray = [
 
-  null, null, null,
-  null, null, null,
-  null, null, null
+  "", "", "",
+  "", "", "",
+  "", "", ""
 
 ];
 
-// choose to play as X or O
-playerSelect.addEventListener("click", choosePlayer);
+
+
+  // choose to play as X or O
+  playerSelect.addEventListener("click", choosePlayer);
 
 function choosePlayer(e) {
   if (e.target !== e.currentTarget) {
@@ -27,119 +32,105 @@ function choosePlayer(e) {
     if (e.target.innerHTML === "X") {
       player = playerChar.innerHTML = "X";
       computer = computerChar.innerHTML = "O";
-
     }
     if (e.target.innerHTML === "O") {
       player = playerChar.innerHTML = "O";
       computer = computerChar.innerHTML = "X";
-
     }
-
   }
+
+  turn = player; // makes player first turn
+
 }
 
 // listen for clicks on the board
-htmlGrid.addEventListener("click", gameInit);
+htmlGrid.addEventListener("click", gameBoard);
 
-function gameInit(e) {
-  if (e.target !== e.currentTarget) {
+function gameBoard(e) {
+  if (e.target.className === "cell") { // prevent clicks on other html elements
+    if (e.target.innerHTML === "") { // only allow one move per box
 
-    e.target.innerHTML = player;
+          e.target.innerHTML = turn;
 
-    if (e.target === c00){
-      board[1] = player;
-    }
-    if (e.target === c01){
-      board[2] = player;
-    }
-    if (e.target === c02){
-      board[3] = player;
-    }
-    if (e.target === c10){
-      board[4] = player;
-    }
-    if (e.target === c11){
-      board[5] = player;
-    }
-    if (e.target === c12){
-      board[6] = player;
-    }
-    if (e.target === c20){
-      board[7] = player;
-    }
-    if (e.target === c21){
-      board[8] = player;
-    }
-    if (e.target === c22){
-      board[9] = player;
-    }
+      // change game state and start counting moves
+      if (e.target.innerHTML !== "") {
+        gameSession = true;
+        moves++;
+        console.log("Move: " + moves);
+      }
 
-    declareWinner();
-
+      // update boardArray with moves
+      for (var i = 0; i < boardArray.length; i++) {
+        boardArray[i] = cells[i].innerHTML;
+      }
+      switchPlayer();
+      declareWinner();
+    }
   }
+
+}
+
+// alternate players every turn
+function switchPlayer() {
+
+  if (turn === player) {
+    turn = computer;
+  } else if (turn === computer) {
+    turn = player;
+  }
+
 }
 
 // declare the winner
 function declareWinner() {
 
-    // horizontal & vertical
-    for (var i = 0; i < 9; i++){
-      if (board[i] !== null && board[i] === board[i + 1] && board[i + 1] === board[i + 2] || board[i] !== null && board[i] === board[i + 3] && board[i + 3] === board[i + 6]){
-         announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-      }
+  // horizontal
+  if ((boardArray[0] !== "" && boardArray[0] === boardArray[1] && boardArray[1] === boardArray[2]) ||
+    (boardArray[3] !== "" && boardArray[3] === boardArray[4] && boardArray[4] === boardArray[5]) ||
+    (boardArray[6] !== "" && boardArray[6] === boardArray[7] && boardArray[7] === boardArray[8])) {
+    if (turn === "X") {
+      announceWinner.innerHTML = "<h2>O is the winner!<h2>";
+    } else {
+      announceWinner.innerHTML = "<h2>X is the winner!<h2>";
     }
+  }
 
-
-    // if (board[1] === board[2] && board[2] === board[3] && board[1] === board[3]){
-    //  announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-    // }
-    // if (board[4] === board[5] && board[5] === board[6]){
-    //  announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-    // }
-    // if (board[7] === board[8] && board[8] === board[9]){
-    //  announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-    // }
-
-    // vertical
-
-    // for (var i = 0; i < 9; i++){
-    //   if (board[i] !== null && board[i] === board[i + 3] && board[i + 3] === board[i + 6]){
-    //      announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-    //   }
-    // }
+  // vertical
 
 
 
-    // diagonal
 
-    for (var j = 0; j < 9; j++){
-      if (board[j] !== null && board[j] === board[j + 4] && board[j + 4] === board[j + 8]) {
-         announceWinner.innerHTML = "<h2>"+ player + " is the winner!" + "</h2>";
-      }
-    }
+
+  // diagonal
+
 
 }
 
+
 // reset the game
-function restartGame() {
+reset.addEventListener("click", resetGame);
 
-  board = [
+function resetGame() {
 
-    null, null, null,
-    null, null, null,
-    null, null, null
+  var boardArray = [
+
+    "", "", "",
+    "", "", "",
+    "", "", ""
 
   ];
 
-  // loop through all cells and clear moves
+  // loop through all cells and clear html
   for (var i = 0; i < cells.length; i++) {
     cells[i].innerHTML = "";
   }
+
+  turn = player; // make player the first move after reset
+  gameSession = false;
+  moves = 0;
 
   announceWinner.innerHTML = "";
 
   console.log("game reset");
 
 }
-
-reset.addEventListener("click", restartGame);
