@@ -10,7 +10,7 @@ var reset = document.querySelector("#reset");
 var player = "";
 var computer = "";
 var turn = "";
-var moves = 0; //TODO: counting but haven't used yet
+var moves = 0;
 var gameSession = false;
 
 var boardArray = [
@@ -23,8 +23,8 @@ var boardArray = [
 
 
 
-  // choose to play as X or O
-  playerSelect.addEventListener("click", choosePlayer);
+// choose to play as X or O
+playerSelect.addEventListener("click", choosePlayer);
 
 function choosePlayer(e) {
   if (e.target !== e.currentTarget) {
@@ -50,7 +50,7 @@ function gameBoard(e) {
   if (e.target.className === "cell") { // prevent clicks on other html elements
     if (e.target.innerHTML === "") { // only allow one move per box
 
-          e.target.innerHTML = turn;
+      e.target.innerHTML = turn;
 
       // change game state and start counting moves
       if (e.target.innerHTML !== "") {
@@ -82,27 +82,33 @@ function switchPlayer() {
 }
 
 // declare the winner
+// TODO: vertical and diagonal needed, figure out a more elegant way to do this
 function declareWinner() {
 
-  // horizontal
-  if ((boardArray[0] !== "" && boardArray[0] === boardArray[1] && boardArray[1] === boardArray[2]) ||
-    (boardArray[3] !== "" && boardArray[3] === boardArray[4] && boardArray[4] === boardArray[5]) ||
-    (boardArray[6] !== "" && boardArray[6] === boardArray[7] && boardArray[7] === boardArray[8])) {
-    if (turn === "X") {
-      announceWinner.innerHTML = "<h2>O is the winner!<h2>";
-    } else {
-      announceWinner.innerHTML = "<h2>X is the winner!<h2>";
+  if (moves !== 9) {
+
+    // horizontal
+    if ((boardArray[0] !== "" && boardArray[0] === boardArray[1] && boardArray[1] === boardArray[2]) ||
+      (boardArray[3] !== "" && boardArray[3] === boardArray[4] && boardArray[4] === boardArray[5]) ||
+      (boardArray[6] !== "" && boardArray[6] === boardArray[7] && boardArray[7] === boardArray[8])) {
+      if (turn === "X") {
+        announceWinner.innerHTML = "<h2>O is the winner!<h2>";
+      } else {
+        announceWinner.innerHTML = "<h2>X is the winner!<h2>";
+      }
     }
+
+    // vertical
+
+
+
+
+
+    // diagonal
+
+  } else {
+    announceWinner.innerHTML = "<h2>It's a draw.<h2>";
   }
-
-  // vertical
-
-
-
-
-
-  // diagonal
-
 
 }
 
