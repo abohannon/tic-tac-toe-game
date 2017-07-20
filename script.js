@@ -7,8 +7,8 @@ var scoreboard = document.querySelector(".scoreboard");
 var reset = document.querySelector("#reset");
 
 // app variables
-var player = "";
-var computer = "";
+var player = null;
+var computer = null;
 var turn = "";
 var moves = 0;
 var gameSession = false;
@@ -20,8 +20,6 @@ var boardArray = [
   "", "", ""
 
 ];
-
-
 
 // choose to play as X or O
 playerSelect.addEventListener("click", choosePlayer);
@@ -43,6 +41,7 @@ function choosePlayer(e) {
 
 }
 
+
 // listen for clicks on the board
 htmlGrid.addEventListener("click", gameBoard);
 
@@ -58,17 +57,30 @@ function gameBoard(e) {
         moves++;
         console.log("Move: " + moves);
       }
-
       // update boardArray with moves
       for (var i = 0; i < boardArray.length; i++) {
         boardArray[i] = cells[i].innerHTML;
       }
+
+      computerMoves();
       switchPlayer();
       declareWinner();
+
     }
   }
 
 }
+
+function computerMoves(){
+
+
+}
+
+
+
+
+
+
 
 // alternate players every turn
 function switchPlayer() {
@@ -81,8 +93,10 @@ function switchPlayer() {
 
 }
 
+
+
 // declare the winner
-// TODO: vertical and diagonal needed, figure out a more elegant way to do this
+// TODO: the announcements are inverted due to the computer AI - still need to figure that out.
 function declareWinner() {
 
   if (moves !== 9) {
@@ -91,32 +105,32 @@ function declareWinner() {
     if ((boardArray[0] !== "" && boardArray[0] === boardArray[1] && boardArray[1] === boardArray[2]) ||
       (boardArray[3] !== "" && boardArray[3] === boardArray[4] && boardArray[4] === boardArray[5]) ||
       (boardArray[6] !== "" && boardArray[6] === boardArray[7] && boardArray[7] === boardArray[8])) {
-        if (turn === "X") {
-          announceWinner.innerHTML = "<h2>O is the winner!<h2>";
-        } else {
-          announceWinner.innerHTML = "<h2>X is the winner!<h2>";
-        }
+      if (turn === "O") {
+        announceWinner.innerHTML = "<h2>O is the winner!<h2>";
+      } else {
+        announceWinner.innerHTML = "<h2>X is the winner!<h2>";
+      }
     }
 
     // vertical
     if ((boardArray[0] !== "" && boardArray[0] === boardArray[3] && boardArray[3] === boardArray[6]) ||
       (boardArray[1] !== "" && boardArray[1] === boardArray[4] && boardArray[4] === boardArray[7]) ||
       (boardArray[2] !== "" && boardArray[2] === boardArray[5] && boardArray[5] === boardArray[8])) {
-        if (turn === "X") {
-          announceWinner.innerHTML = "<h2>O is the winner!<h2>";
-        } else {
-          announceWinner.innerHTML = "<h2>X is the winner!<h2>";
-        }
+      if (turn === "O") {
+        announceWinner.innerHTML = "<h2>O is the winner!<h2>";
+      } else {
+        announceWinner.innerHTML = "<h2>X is the winner!<h2>";
+      }
     }
 
     // diagonal
     if ((boardArray[0] !== "" && boardArray[0] === boardArray[4] && boardArray[4] === boardArray[8]) ||
       (boardArray[2] !== "" && boardArray[2] === boardArray[4] && boardArray[4] === boardArray[6])) {
-        if (turn === "X") {
-          announceWinner.innerHTML = "<h2>O is the winner!<h2>";
-        } else {
-          announceWinner.innerHTML = "<h2>X is the winner!<h2>";
-        }
+      if (turn === "O") {
+        announceWinner.innerHTML = "<h2>O is the winner!<h2>";
+      } else {
+        announceWinner.innerHTML = "<h2>X is the winner!<h2>";
+      }
     }
 
   } else {
@@ -131,17 +145,9 @@ reset.addEventListener("click", resetGame);
 
 function resetGame() {
 
-  var boardArray = [
-
-    "", "", "",
-    "", "", "",
-    "", "", ""
-
-  ];
-
-  // loop through all cells and clear html
-  for (var i = 0; i < cells.length; i++) {
-    cells[i].innerHTML = "";
+  // clear the board array and the cells on the html grid
+  for (var i = 0; i < boardArray.length; i++) {
+    boardArray[i] = cells[i].innerHTML = "";
   }
 
   turn = player; // make player the first move after reset
