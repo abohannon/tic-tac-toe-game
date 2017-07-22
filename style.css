@@ -70,3 +70,7 @@ button:active {
   font-size:72px;
   color:white;
 }
+
+.win-msg {
+  height:30px;
+}
