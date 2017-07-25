@@ -10,9 +10,10 @@ var winnerMsg = document.querySelector('#winner-msg');
 var turn = "";
 var player;
 var computer;
-var availSpots;
 var moves = 0;
 var gameOn = false;
+var validMoves;
+var playerMovesCopy;
 
 var board = [
 
@@ -50,20 +51,18 @@ function choosePlayer(e) {
       computer = computerChar.innerHTML = "X";
     }
   }
-
 }
 
 // game board functionality
 grid.addEventListener('click', updateBoard, false);
 
 function updateBoard(e) {
-  if (e.target.className == "cell" && gameOn === true) {
+  if (e.target.className === "cell" && gameOn === true) {
     if (e.target.innerHTML !== "O" && e.target.innerHTML !== "X") {
 
 
       e.target.innerHTML = turn;
       moves++;
-      console.log("Moves:", moves);
 
       for (var i = 0; i < board.length; i++) {
         if (cells[i].innerHTML !== "") {
@@ -71,13 +70,11 @@ function updateBoard(e) {
         }
       }
 
-      // computerMove();
+      console.log("Valid Moves:", validMoves(board));
 
-      console.log("valid moves:", validMoves(board));
+
 
       // call declareWinner function and determine who wins
-      // TODO: implement draw if moves are 9 with no winner
-
       if (moves !== 9 && gameOn === true) {
         if (declareWinner(board, player)) {
           winnerMsg.innerHTML = "<h2>Player wins!</h2>";
@@ -90,6 +87,9 @@ function updateBoard(e) {
         winnerMsg.innerHTML = "<h2>It's a draw!</h2>";
       }
 
+      // bestMove();
+      console.log('Player Moves:', playerMoves(board,player));
+      computerMove();
 
     }
 
@@ -103,30 +103,29 @@ function validMoves(board) {
   });
 }
 
-
-
-
-// TODO: TESTING
-function trackMoves(){
-
-  var playerMoves = [];
-
-  for (var i = 0; i < board.length; i++) {
-    playerMoves.push(board.indexOf(player));
-
+// log indexes of player moves
+function playerMoves(board, player) {
+  var idx = [];
+  var i = -1;
+  while ((i = board.indexOf(player, i+1)) != -1){
+    idx.push(i);
   }
-
-  console.log(playerMoves);
+  return idx;
 }
 
+// determine which cells are a threat... in progress
+//TODO: finish bestMove
+function bestMove() {
 
+playerMovesCopy = playerMoves(board, player).slice();
 
+for (var i = 0; i < validMoves(board).length; i++){
 
+  playerMovesCopy.push(validMoves(board)[i]);
 
+}
 
-
-
-
+}
 
 // TODO: need to prioritize winning. Right now the computer does not choose the winning move.
 function computerMove() {
