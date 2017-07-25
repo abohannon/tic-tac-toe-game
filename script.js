@@ -70,9 +70,6 @@ function updateBoard(e) {
         }
       }
 
-      console.log("Valid Moves:", validMoves(board));
-
-
 
       // call declareWinner function and determine who wins
       if (moves !== 9 && gameOn === true) {
@@ -87,8 +84,10 @@ function updateBoard(e) {
         winnerMsg.innerHTML = "<h2>It's a draw!</h2>";
       }
 
-      // bestMove();
-      console.log('Player Moves:', playerMoves(board,player));
+
+      console.log('Player Moves:', playerMoves(board, player));
+      console.log("Valid Moves:", validMoves(board));
+      bestMove();
       computerMove();
 
     }
@@ -107,7 +106,7 @@ function validMoves(board) {
 function playerMoves(board, player) {
   var idx = [];
   var i = -1;
-  while ((i = board.indexOf(player, i+1)) != -1){
+  while ((i = board.indexOf(player, i + 1)) != -1) {
     idx.push(i);
   }
   return idx;
@@ -117,18 +116,26 @@ function playerMoves(board, player) {
 //TODO: finish bestMove
 function bestMove() {
 
-playerMovesCopy = playerMoves(board, player).slice();
+  for (var i = 0; i < validMoves(board).length; i++) {
 
-for (var i = 0; i < validMoves(board).length; i++){
+    var bestMoveIdx = validMoves(board)[i];
+    playerMovesCopy = playerMoves(board, player).slice();
+    playerMovesCopy.push(bestMoveIdx);
+    console.log("Psbl next", playerMovesCopy);
+    console.log("Win combo", wins[i]);
 
-  playerMovesCopy.push(validMoves(board)[i]);
-
-}
-
+    if (playerMovesCopy.toString().includes(wins[i].toString())) {
+      console.log("WINNING COMBO");
+      console.log("best move index,", bestMoveIdx);
+      return bestMoveIdx;
+    }
+  }
 }
 
 // TODO: need to prioritize winning. Right now the computer does not choose the winning move.
 function computerMove() {
+
+
 
 
   // if (validMoves(board).includes(4)) {
