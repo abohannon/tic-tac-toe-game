@@ -89,6 +89,7 @@ function updateBoard(e) {
       console.log("Valid Moves:", validMoves(board));
       bestMove();
       computerMove();
+      // console.log(computerMoves());
 
     }
 
@@ -112,22 +113,34 @@ function playerMoves(board, player) {
   return idx;
 }
 
+// log indexes of computer moves
+function computerMoves() {
+  var idx = [];
+  var i = -1;
+  while ((i = board.indexOf(computer, i + 1)) != -1) {
+    idx.push(i);
+  }
+  return idx;
+}
+
+var nextMoveIdx;
+
 // determine which cells are a threat... in progress
 //TODO: finish bestMove
 function bestMove() {
 
   for (var i = 0; i < validMoves(board).length; i++) {
 
-    var bestMoveIdx = validMoves(board)[i];
+    nextMoveIdx = validMoves(board)[i];
     playerMovesCopy = playerMoves(board, player).slice();
-    playerMovesCopy.push(bestMoveIdx);
+    playerMovesCopy.push(nextMoveIdx);
     console.log("Psbl next", playerMovesCopy);
-    console.log("Win combo", wins[i]);
 
-    if (playerMovesCopy.toString().includes(wins[i].toString())) {
-      console.log("WINNING COMBO");
-      console.log("best move index,", bestMoveIdx);
-      return bestMoveIdx;
+    for (var j = 0; j < wins.length; j++){
+      console.log("win combo", wins[j]);
+      if (wins[j].every(e => playerMovesCopy.indexOf(e) > -1)){
+        console.log("WINNING COMBO");
+      }
     }
   }
 }
@@ -136,28 +149,26 @@ function bestMove() {
 function computerMove() {
 
 
-
-
-  // if (validMoves(board).includes(4)) {
-  //   setTimeout(function() {
-  //     board[4] = cells[4].innerHTML = computer;
-  //   }, 1000);
-  // }
+  if (validMoves(board).includes(4)) {
+    setTimeout(function() {
+      board[4] = cells[4].innerHTML = computer;
+    }, 1000);
+  }
   // else if ( board[0] === player &&
   //           board[1] === player &&
   //           board[2] === 2) {
   //   setTimeout(function() {board[2] = cells[2].innerHTML = computer;},1000);
   // }
-  // else if ( board[1] === player &&
+  // if ( board[1] === player &&
   //           board[2] === player &&
   //           board[0] === 0) {
   //   setTimeout(function() {board[0] = cells[0].innerHTML = computer;},1000);
   // }
-  // else if ( board[0] === player &&
-  //           board[2] === player &&
-  //           board[1] === 1) {
-  //   board[1] = cells[1].innerHTML = computer;
-  // } // top horizontal
+  if ( board[0] === player &&
+            board[2] === player &&
+            board[1] === 1) {
+    board[1] = cells[1].innerHTML = computer;
+  } // top horizontal
   // else if ( board[3] === player &&
   //           board[4] === player &&
   //           board[5] === 5) {
@@ -188,11 +199,11 @@ function computerMove() {
   //           board[7] === 7) {
   //   board[7] = cells[7].innerHTML = computer;
   // } // bottom horizontal
-  // else if ( board[0] === player &&
-  //           board[3] === player &&
-  //           board[6] === 6) {
-  //   board[6] = cells[6].innerHTML = computer;
-  // }
+if ( board[0] === player &&
+            board[3] === player &&
+            board[6] === 6) {
+    board[6] = cells[6].innerHTML = computer;
+  }
   // else if ( board[3] === player &&
   //           board[6] === player &&
   //           board[0] === 0) {
