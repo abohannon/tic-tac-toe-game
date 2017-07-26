@@ -40,7 +40,7 @@ var wins = [
 playerSelect.addEventListener('click', choosePlayer, false);
 
 function choosePlayer(e) {
-  if (e.target !== e.currentTarget) {
+  if (e.target !== e.currentTarget && gameOn === false) {
 
     gameOn = true;
 
@@ -65,6 +65,7 @@ function updateBoard(e) {
 
       e.target.innerHTML = turn;
       moves++;
+      console.log(moves++);
 
       for (var i = 0; i < board.length; i++) {
         if (cells[i].innerHTML !== "") {
@@ -75,13 +76,7 @@ function updateBoard(e) {
       console.log('Player Moves:', playerMoves(board, player));
       console.log("Valid Moves:", validMoves(board));
 
-      if (bestWin()){
-        bestWin();
-      } else if (bestBlock()){
-        bestBlock();
-      }
-      
-
+      computerRandom();
 
       // call declareWinner function and determine who wins
       if (moves !== 9 && gameOn === true) {
@@ -102,6 +97,7 @@ function updateBoard(e) {
   }
 }
 
+
 // return list of empty board spots
 function validMoves(board) {
   return board.filter(function(spot) {
@@ -119,218 +115,37 @@ function playerMoves(board, player) {
   return idx;
 }
 
-// log indexes of computer moves
-function computerMoves() {
-  var idx = [];
-  var i = -1;
-  while ((i = board.indexOf(computer, i + 1)) != -1) {
-    idx.push(i);
-  }
-  return idx;
-}
-
-
-computerMovesCopy = computerMoves().slice();
-computerMovesCopy.push(nextMoveIdx);
-console.log("Computer Next Possible", computerMovesCopy);
-
-// determine which cells are a threat... in progress
-
-function takeCenter(){
-  if (validMoves(board).includes(4)) {
-      board[4] = cells[4].innerHTML = computer;
-  }
-}
-
-function bestWin() {
-
-  for (var i = 0; i < validMoves(board).length; i++) {
-
-    nextMoveIdx = validMoves(board)[i];
-
-    computerMovesCopy = computerMoves().slice();
-    computerMovesCopy.push(nextMoveIdx);
-    console.log("Computer Next Possible", computerMovesCopy);
-
-    for (var j = 0; j < wins.length; j++){
-      console.log("win combo", wins[j]);
-      if (wins[j].every(e => computerMovesCopy.indexOf(e) > -1)){
-        console.log("BEST WINNING COMPUTER MOVE", nextMoveIdx);
-        board[nextMoveIdx] = cells[nextMoveIdx].innerHTML = computer;
-      }
-    }
-
-  }
-
-}
-
-function bestBlock() {
-
-  for (var i = 0; i < validMoves(board).length; i++) {
-
-    nextMoveIdx = validMoves(board)[i];
-
-    playerMovesCopy = playerMoves(board, player).slice();
-    playerMovesCopy.push(nextMoveIdx);
-    console.log("Player Next Possible", playerMovesCopy);
-
-    for (var j = 0; j < wins.length; j++){
-      console.log("win combo", wins[j]);
-      if (wins[j].every(e => playerMovesCopy.indexOf(e) > -1)){
-        console.log("BEST BLOCKING COMPUTER MOVE", nextMoveIdx);
-        board[nextMoveIdx] = cells[nextMoveIdx].innerHTML = computer;
-      }
-    }
-
-  }
-
-}
-
-// TODO: need to prioritize winning. Right now the computer does not choose the winning move.
-function computerMove() {
-
-
-  // if (validMoves(board).includes(4)) {
-  //   setTimeout(function() {
-  //     board[4] = cells[4].innerHTML = computer;
-  //   }, 1000);
-  // }
-  // else if ( board[0] === player &&
-  //           board[1] === player &&
-  //           board[2] === 2) {
-  //   setTimeout(function() {board[2] = cells[2].innerHTML = computer;},1000);
-  // }
-  // if ( board[1] === player &&
-  //           board[2] === player &&
-  //           board[0] === 0) {
-  //   setTimeout(function() {board[0] = cells[0].innerHTML = computer;},1000);
-  // }
-  // if ( board[0] === player &&
-  //           board[2] === player &&
-  //           board[1] === 1) {
-  //   board[1] = cells[1].innerHTML = computer;
-  // } // top horizontal
-  // else if ( board[3] === player &&
-  //           board[4] === player &&
-  //           board[5] === 5) {
-  //   board[5] = cells[5].innerHTML = computer;
-  // }
-  // else if ( board[4] === player &&
-  //           board[5] === player &&
-  //           board[3] === 3) {
-  //   board[3] = cells[3].innerHTML = computer;
-  // }
-  // else if ( board[3] === player &&
-  //           board[5] === player &&
-  //           board[4] === 4) {
-  //   board[4] = cells[4].innerHTML = computer;
-  // } // middle horizontal
-  // else if ( board[6] === player &&
-  //           board[7] === player &&
-  //           board[8] === 8) {
-  //   board[8] = cells[8].innerHTML = computer;
-  // }
-  // else if ( board[7] === player &&
-  //           board[8] === player &&
-  //           board[6] === 6) {
-  //   board[6] = cells[6].innerHTML = computer;
-  // }
-  // else if ( board[6] === player &&
-  //           board[8] === player &&
-  //           board[7] === 7) {
-  //   board[7] = cells[7].innerHTML = computer;
-  // } // bottom horizontal
-// if ( board[0] === player &&
-//             board[3] === player &&
-//             board[6] === 6) {
-//     board[6] = cells[6].innerHTML = computer;
+// function bestBlock() {
+//
+//   for (var i = 0; i < validMoves(board).length; i++) {
+//
+//     nextMoveIdx = validMoves(board)[i];
+//
+//     playerMovesCopy = playerMoves(board, player).slice();
+//     playerMovesCopy.push(nextMoveIdx);
+//     // console.log("Player Next Possible", playerMovesCopy);
+//
+//     for (var j = 0; j < wins.length; j++){
+//       console.log("win combo", wins[j]);
+//       if (wins[j].every(e => playerMovesCopy.indexOf(e) > -1)){
+//         console.log("BEST BLOCKING COMPUTER MOVE", nextMoveIdx);
+//         board[nextMoveIdx] = cells[nextMoveIdx].innerHTML = computer;
+//       }
+//     }
+//
 //   }
-  // else if ( board[3] === player &&
-  //           board[6] === player &&
-  //           board[0] === 0) {
-  //   board[0] = cells[0].innerHTML = computer;
-  // }
-  // else if ( board[0] === player &&
-  //           board[6] === player &&
-  //           board[3] === 3) {
-  //   board[3] = cells[3].innerHTML = computer;
-  // } // left vertical
-  // else if ( board[1] === player &&
-  //           board[4] === player &&
-  //           board[7] === 7) {
-  //   board[7] = cells[7].innerHTML = computer;
-  // }
-  // else if ( board[4] === player &&
-  //           board[7] === player &&
-  //           board[1] === 1) {
-  //   board[1] = cells[1].innerHTML = computer;
-  // }
-  // else if ( board[1] === player &&
-  //           board[7] === player &&
-  //           board[4] === 4) {
-  //   board[4] = cells[4].innerHTML = computer;
-  // } // middle vertical
-  // else if ( board[2] === player &&
-  //           board[5] === player &&
-  //           board[8] === 8) {
-  //   board[8] = cells[8].innerHTML = computer;
-  // }
-  // else if ( board[5] === player &&
-  //           board[8] === player &&
-  //           board[2] === 2) {
-  //   board[2] = cells[2].innerHTML = computer;
-  // }
-  // else if ( board[2] === player &&
-  //           board[8] === player &&
-  //           board[5] === 5) {
-  //   board[5] = cells[5].innerHTML = computer;
-  // } // right vertical
-  // else if ( board[0] === player &&
-  //           board[4] === player &&
-  //           board[8] === 8) {
-  //   board[8] = cells[8].innerHTML = computer;
-  // }
-  // else if ( board[4] === player &&
-  //           board[8] === player &&
-  //           board[0] === 0) {
-  //   setTimeout(function(){board[0] = cells[0].innerHTML = computer;},1000);
-  // }
-  // else if ( board[0] === player &&
-  //           board[8] === player &&
-  //           board[4] === 4) {
-  //   setTimeout(function(){board[4] = cells[4].innerHTML = computer;},1000);
-  // } // left diagonal
-  // else if ( board[2] === player &&
-  //           board[4] === player &&
-  //           board[6] === 6) {
-  //   setTimeout(function(){board[6] = cells[6].innerHTML = computer;},1000);
-  // }
-  // else if ( board[4] === player &&
-  //           board[6] === player &&
-  //           board[2] === 2) {
-  //   setTimeout(function(){board[2] = cells[2].innerHTML = computer;},1000);
-  // }
-  // else if ( board[2] === player &&
-  //           board[6] === player &&
-  //           board[4] === 4) {
-  //   setTimeout(function(){board[4] = cells[4].innerHTML = computer;},1000);
-  // } // right diagonal
-  // else {
-  //     computerRandom();
-  // }
-
-}
+//
+// }
 
 // TODO: Randomize computer move if no best move available. This sort of works, need to perfect.
 function computerRandom() {
 
-  for (var i = 0; i < validMoves(board).length; i++) {
-    if (board[i] !== player) {
-      var rand = Math.floor(Math.random() * i);
-      board[i] = cells[i].innerHTML = computer;
-      break;
-    }
+  var len = validMoves(board).length;
 
+  for (var i = 0; i < len; i++) {
+    var rand = validMoves(board)[Math.floor(Math.random() * len)];
+    board[rand] = cells[rand].innerHTML = computer;
+      break;
   }
 }
 
@@ -374,5 +189,7 @@ reset.addEventListener('click', function() {
   });
 
   winnerMsg.innerHTML = "";
+
+  gameOn = false;
 
 }, false);
