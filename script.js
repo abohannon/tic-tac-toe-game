@@ -68,9 +68,9 @@ function updateBoard(e) {
 
       console.log("Valid Moves:", validMoves());
 
-      computerChoose();
-
       computerBrain();
+
+      computerChoose();
 
       console.log("Computer Moves:", computerMoves());
 
@@ -141,39 +141,15 @@ function computerChoose() {
         console.log("COMP WIN", nextMove);
         compWin = nextMove;
       }
-      if (wins[j].every(e => playerMovesNext.indexOf(e) > -1)) {
-        console.log("COMP BLOCK", nextMove);
-        compBlock = nextMove;
-
-      }
+      // if (wins[j].every(e => playerMovesNext.indexOf(e) > -1)) {
+      //   console.log("COMP BLOCK", nextMove);
+      //   compBlock = nextMove;
+      //
+      // }
     }
   }
 }
 
-
-
-
-// function bestBlock() {
-//
-//   for (var i = 0; i < validMoves(board).length; i++) {
-//
-//     nextMoveIdx = validMoves(board)[i];
-//
-//     playerMovesCopy = playerMoves(board, player).slice();
-//     playerMovesCopy.push(nextMoveIdx);
-//     // console.log("Player Next Possible", playerMovesCopy);
-//
-//     for (var j = 0; j < wins.length; j++){
-//       console.log("win combo", wins[j]);
-//       if (wins[j].every(e => playerMovesCopy.indexOf(e) > -1)){
-//         console.log("BEST BLOCKING COMPUTER MOVE", nextMoveIdx);
-//         board[nextMoveIdx] = cells[nextMoveIdx].innerHTML = computer;
-//       }
-//     }
-//
-//   }
-//
-// }
 
 
 // generate a random computer move
@@ -187,16 +163,15 @@ function computerBrain() {
       break;
     } else if (compWin && board[compWin] !== player) {
       board[compWin] = cells[compWin].innerHTML = computer;
-      console.log("Win move");
-      break;
-    } else if (compBlock && board[compWin] !== player) {
-      board[compBlock] = cells[compBlock].innerHTML = computer;
-      console.log("Block move");
-      break;
-    } else {
+
+    }
+    // else if (compBlock && board[compBlock] !== player) {
+    //   board[compBlock] = cells[compBlock].innerHTML = computer;
+    //
+    // }
+    else {
       var rand = validMoves()[Math.floor(Math.random() * len)];
       board[rand] = cells[rand].innerHTML = computer;
-      console.log("Random move");
       break;
     }
   }
