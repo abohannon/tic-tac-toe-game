@@ -130,45 +130,42 @@ function computerChoose() {
     computerMovesNext = computerMoves().slice();
     playerMovesNext = playerMoves().slice();
     nextMove = validMoves()[i];
-    // console.log(nextMove);
     computerMovesNext.push(nextMove);
     console.log("computer nxt", computerMovesNext);
     playerMovesNext.push(nextMove);
     console.log("player nxt", playerMovesNext);
 
     for (var j = 0; j < wins.length; j++) {
-      if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)) {
+      if (wins[j].every(e => playerMovesNext.indexOf(e) > -1)) {
+        console.log("COMP BLOCK", nextMove);
+        compBlock = nextMove;
+      }
+      else if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)) {
         console.log("COMP WIN", nextMove);
         compWin = nextMove;
       }
-      // if (wins[j].every(e => playerMovesNext.indexOf(e) > -1)) {
-      //   console.log("COMP BLOCK", nextMove);
-      //   compBlock = nextMove;
-      //
-      // }
     }
+
   }
 }
 
 
-
-// generate a random computer move
+// generate a computer move
 function computerBrain() {
 
   var len = validMoves().length;
 
   for (var i = 0; i < len; i++) {
+
     if (board[4] === 4) {
       board[4] = cells[4].innerHTML = computer;
       break;
-    } else if (compWin && board[compWin] !== player) {
+    } if (compBlock && board[compBlock !== player]) {
+      board[compBlock] = cells[compBlock].innerHTML = computer;
+    } if (compWin && board[compWin] !== player) {
       board[compWin] = cells[compWin].innerHTML = computer;
 
     }
-    // else if (compBlock && board[compBlock] !== player) {
-    //   board[compBlock] = cells[compBlock].innerHTML = computer;
-    //
-    // }
     else {
       var rand = validMoves()[Math.floor(Math.random() * len)];
       board[rand] = cells[rand].innerHTML = computer;
