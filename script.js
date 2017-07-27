@@ -68,9 +68,9 @@ function updateBoard(e) {
 
       console.log("Valid Moves:", validMoves());
 
-      computerRandom();
-
       computerChoose();
+
+      computerBrain();
 
       console.log("Computer Moves:", computerMoves());
 
@@ -137,14 +137,14 @@ function computerChoose() {
     console.log("player nxt", playerMovesNext);
 
     for (var j = 0; j < wins.length; j++) {
+      if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)) {
+        console.log("COMP WIN", nextMove);
+        compWin = nextMove;
+      }
       if (wins[j].every(e => playerMovesNext.indexOf(e) > -1)) {
         console.log("COMP BLOCK", nextMove);
         compBlock = nextMove;
 
-      }
-      if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)) {
-        console.log("COMP WIN", nextMove);
-        compWin = nextMove;
       }
     }
   }
@@ -177,7 +177,7 @@ function computerChoose() {
 
 
 // generate a random computer move
-function computerRandom() {
+function computerBrain() {
 
   var len = validMoves().length;
 
