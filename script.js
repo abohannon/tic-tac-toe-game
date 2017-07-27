@@ -82,7 +82,7 @@ function updateBoard(e) {
 }
 
 // sync board array with input placed inside DOM cells
-function syncBoard(){
+function syncBoard() {
   for (var i = 0; i < board.length; i++) {
     if (cells[i].innerHTML !== "") {
       board[i] = cells[i].innerHTML;
@@ -121,10 +121,11 @@ var computerMovesNext;
 var playerMovesNext;
 var nextMove;
 var compWin;
+var compBlock;
 
 function computerChoose() {
 
-  for (var i = 0; i < validMoves().length; i++){
+  for (var i = 0; i < validMoves().length; i++) {
 
     computerMovesNext = computerMoves().slice();
     playerMovesNext = playerMoves().slice();
@@ -135,12 +136,16 @@ function computerChoose() {
     playerMovesNext.push(nextMove);
     console.log("player nxt", playerMovesNext);
 
-    for (var j = 0; j < wins.length; j++){
-      if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)){
+    for (var j = 0; j < wins.length; j++) {
+      if (wins[j].every(e => playerMovesNext.indexOf(e) > -1)) {
+        console.log("COMP BLOCK", nextMove);
+        compBlock = nextMove;
+
+      }
+      if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)) {
         console.log("COMP WIN", nextMove);
         compWin = nextMove;
       }
-
     }
   }
 }
@@ -177,15 +182,21 @@ function computerRandom() {
   var len = validMoves().length;
 
   for (var i = 0; i < len; i++) {
-    if (board[4] === 4){
+    if (board[4] === 4) {
       board[4] = cells[4].innerHTML = computer;
       break;
-    } else if (compWin) {
+    } else if (compWin && board[compWin] !== player) {
       board[compWin] = cells[compWin].innerHTML = computer;
-    }
-    else {
+      console.log("Win move");
+      break;
+    } else if (compBlock && board[compWin] !== player) {
+      board[compBlock] = cells[compBlock].innerHTML = computer;
+      console.log("Block move");
+      break;
+    } else {
       var rand = validMoves()[Math.floor(Math.random() * len)];
       board[rand] = cells[rand].innerHTML = computer;
+      console.log("Random move");
       break;
     }
   }
@@ -212,7 +223,7 @@ function winner(gameBoard, move) {
 }
 
 // logic to decide who wins or if it's a draw
-function declareWinner(){
+function declareWinner() {
 
   if (gameOn === true) {
     if (winner(board, player)) {
