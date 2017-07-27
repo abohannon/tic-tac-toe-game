@@ -7,10 +7,8 @@ var scoreboard = document.querySelector('.scoreboard');
 var reset = document.querySelector('#reset');
 var winnerMsg = document.querySelector('#winner-msg');
 
-var turn = "";
-var player;
-var computer;
-var moves = 0;
+var player = "";
+var computer = "";
 var gameOn = false;
 var validMoves;
 var playerMovesCopy;
@@ -45,11 +43,11 @@ function choosePlayer(e) {
     gameOn = true;
 
     if (e.target.innerHTML === "X") {
-      turn = player = playerChar.innerHTML = "X";
+      player = playerChar.innerHTML = "X";
       computer = computerChar.innerHTML = "O";
     }
     if (e.target.innerHTML === "O") {
-      turn = player = playerChar.innerHTML = "O";
+      player = playerChar.innerHTML = "O";
       computer = computerChar.innerHTML = "X";
     }
   }
@@ -60,53 +58,47 @@ grid.addEventListener('click', updateBoard, false);
 
 function updateBoard(e) {
   if (e.target.className === "cell" && gameOn === true) {
-    if (e.target.innerHTML !== "O" && e.target.innerHTML !== "X") {
+    if (e.target.innerHTML !== player && e.target.innerHTML !== computer) {
 
+      e.target.innerHTML = player;
 
-      e.target.innerHTML = turn;
-      moves++;
-      console.log(moves++);
+      syncBoard();
 
-      for (var i = 0; i < board.length; i++) {
-        if (cells[i].innerHTML !== "") {
-          board[i] = cells[i].innerHTML;
-        }
-      }
+      console.log('Player Moves:', playerMoves());
 
-      console.log('Player Moves:', playerMoves(board, player));
-      console.log("Valid Moves:", validMoves(board));
+      console.log("Valid Moves:", validMoves());
 
       computerRandom();
 
-      // call declareWinner function and determine who wins
-      if (moves !== 9 && gameOn === true) {
-        if (declareWinner(board, player)) {
-          winnerMsg.innerHTML = "<h2>Player wins!</h2>";
-          gameOn = false;
-        } else if (declareWinner(board, computer)) {
-          winnerMsg.innerHTML = "<h2>Computer wins!</h2>";
-          gameOn = false;
-        }
-      } else {
-        winnerMsg.innerHTML = "<h2>It's a draw!</h2>";
-      }
+      computerChoose();
 
+      console.log("Computer Moves:", computerMoves());
+
+      declareWinner();
 
     }
 
   }
 }
 
+// sync board array with input placed inside DOM cells
+function syncBoard(){
+  for (var i = 0; i < board.length; i++) {
+    if (cells[i].innerHTML !== "") {
+      board[i] = cells[i].innerHTML;
+    }
+  }
+}
 
 // return list of empty board spots
-function validMoves(board) {
+function validMoves() {
   return board.filter(function(spot) {
     return spot != "O" && spot != "X";
   });
 }
 
-// log indexes of player moves
-function playerMoves(board, player) {
+// log indexes current of player moves
+function playerMoves() {
   var idx = [];
   var i = -1;
   while ((i = board.indexOf(player, i + 1)) != -1) {
@@ -114,6 +106,50 @@ function playerMoves(board, player) {
   }
   return idx;
 }
+
+// log indexes current of computer moves
+function computerMoves() {
+  var idx = [];
+  var i = -1;
+  while ((i = board.indexOf(computer, i + 1)) != -1) {
+    idx.push(i);
+  }
+  return idx;
+}
+
+var computerMovesNext;
+var playerMovesNext;
+var nextMove;
+
+function computerChoose() {
+
+  for (var i = 0; i < validMoves().length; i++){
+
+    computerMovesNext = computerMoves().slice();
+    playerMovesNext = playerMoves().slice();
+    nextMove = validMoves()[i];
+    // console.log(nextMove);
+    computerMovesNext.push(nextMove);
+    console.log("computer", computerMovesNext);
+    playerMovesNext.push(nextMove);
+    console.log("player", playerMovesNext);
+
+    // for (var j = 0; j < wins.length; j++){
+    //   if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)){
+    //     console.log(nextMove);
+    //     board[nextMove] = cells[nextMove].innerHTML = computer;
+    //   }
+    //   if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)){
+    //     console.log(nextMove);
+    //     board[nextMove] = cells[nextMove].innerHTML = computer;
+    //   }
+    // }
+
+  }
+}
+
+
+
 
 // function bestBlock() {
 //
@@ -137,20 +173,26 @@ function playerMoves(board, player) {
 //
 // }
 
-// TODO: Randomize computer move if no best move available. This sort of works, need to perfect.
+
+// generate a random computer move
 function computerRandom() {
 
-  var len = validMoves(board).length;
+  var len = validMoves().length;
 
   for (var i = 0; i < len; i++) {
-    var rand = validMoves(board)[Math.floor(Math.random() * len)];
-    board[rand] = cells[rand].innerHTML = computer;
+    if (board[4] === 4){
+      board[4] = cells[4].innerHTML = computer;
       break;
+    } else {
+      var rand = validMoves()[Math.floor(Math.random() * len)];
+      board[rand] = cells[rand].innerHTML = computer;
+      break;
+    }
   }
 }
 
-// function to pick winner
-function declareWinner(gameBoard, move) {
+// analyze the board to determine a pick winner
+function winner(gameBoard, move) {
 
   if (
     (gameBoard[0] == move && gameBoard[1] == move && gameBoard[2] == move) ||
@@ -169,12 +211,27 @@ function declareWinner(gameBoard, move) {
 
 }
 
+// logic to decide who wins or if it's a draw
+function declareWinner(){
+
+  if (gameOn === true) {
+    if (winner(board, player)) {
+      winnerMsg.innerHTML = "<h2>Player wins!</h2>";
+      // gameOn = false;
+    } else if (winner(board, computer)) {
+      winnerMsg.innerHTML = "<h2>Computer wins!</h2>";
+      // gameOn = false;
+    } else if (gameOn === true && validMoves().length === 0) {
+      winnerMsg.innerHTML = "<h2>It's a draw!</h2>";
+    }
+  }
+}
+
+
 // reset game
 reset.addEventListener('click', function() {
 
   console.clear();
-
-  moves = 0;
 
   board = [
 
@@ -190,6 +247,5 @@ reset.addEventListener('click', function() {
 
   winnerMsg.innerHTML = "";
 
-  gameOn = false;
 
 }, false);
