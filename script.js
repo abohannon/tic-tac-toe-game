@@ -10,6 +10,7 @@ var winnerMsg = document.querySelector('#winner-msg');
 var player = "";
 var computer = "";
 var gameOn = false;
+var moves = 0;
 var validMoves;
 var playerMovesCopy;
 var computerMovesCopy;
@@ -49,12 +50,12 @@ function choosePlayer(e) {
     gameOn = true;
 
     if (e.target.innerHTML === "X") {
-      player = playerChar.innerHTML = "X";
-      computer = computerChar.innerHTML = "O";
+      playerChar.innerHTML = player = "X";
+      computerChar.innerHTML = computer = "O";
     }
     if (e.target.innerHTML === "O") {
-      player = playerChar.innerHTML = "O";
-      computer = computerChar.innerHTML = "X";
+      playerChar.innerHTML = player = "O";
+      computerChar.innerHTML = computer = "X";
     }
   }
 }
@@ -68,17 +69,20 @@ function updateBoard(e) {
 
       e.target.innerHTML = player;
 
+
       syncBoard();
+      moves++;
 
       console.log('Player Moves:', playerMoves());
 
-      console.log("Valid Moves:", validMoves());
-
-      computerBrain();
+      console.log("Valid Moves Before:", validMoves());
 
       computerChoose();
 
+      computerPlay();
       console.log("Computer Moves:", computerMoves());
+
+      console.log("Valid Moves After:", validMoves());
 
       declareWinner();
 
@@ -136,40 +140,44 @@ function computerChoose() {
     // console.log("player nxt", playerMovesNext);
 
     for (var j = 0; j < wins.length; j++) {
+      if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)) {
+        console.log("COMP WIN", nextMove);
+        compWin = nextMove;
+      }
       if (wins[j].every(e => playerMovesNext.indexOf(e) > -1)) {
         console.log("COMP BLOCK", nextMove);
         compBlock = nextMove;
-      }
-      else if (wins[j].every(e => computerMovesNext.indexOf(e) > -1)) {
-        console.log("COMP WIN", nextMove);
-        compWin = nextMove;
       }
     }
 
   }
 }
 
-
 // generate a computer move
-function computerBrain() {
+function computerPlay() {
+
+  moves++;
 
   var len = validMoves().length;
   var rand = validMoves()[Math.floor(Math.random() * len)];
+  console.log("random move", rand);
 
-  for (var i = 0; i < len; i++) {
+  // for (var i = 0; i < len; i++) {
+
 
     if (board[4] === 4) {
       board[4] = cells[4].innerHTML = computer;
-      break;
-    } else if (compWin && board[compWin] !== player) {
-      board[compWin] = cells[compWin].innerHTML = computer;
-      break;
     }
-    else {
+    else if (board[4] === player && board[0] !== computer) {
+      board[0] = cells[0].innerHTML = computer;
+    }
+    else if (board[compBlock] !== player && board[compBlock] !== computer && board[compBlock] !== undefined) {
+      board[compBlock] = cells[compBlock].innerHTML = computer;
+    }
+    else if (board[rand] !== undefined) {
       board[rand] = cells[rand].innerHTML = computer;
-      break;
     }
-  }
+  // }
 }
 
 // analyze the board to determine a pick winner
@@ -198,10 +206,10 @@ function declareWinner() {
   if (gameOn === true) {
     if (winner(board, player)) {
       winnerMsg.innerHTML = "<h2>Player wins!</h2>";
-      // gameOn = false;
+      gameOn = false;
     } else if (winner(board, computer)) {
       winnerMsg.innerHTML = "<h2>Computer wins!</h2>";
-      // gameOn = false;
+      gameOn = false;
     } else if (gameOn === true && validMoves().length === 0) {
       winnerMsg.innerHTML = "<h2>It's a draw!</h2>";
     }
