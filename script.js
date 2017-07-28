@@ -1,5 +1,3 @@
-// TODO: Setup AI
-
 var grid = document.querySelector('.grid');
 var cells = document.querySelectorAll('.cell');
 var playerSelect = document.querySelector('.welcome');
@@ -50,12 +48,12 @@ function choosePlayer(e) {
     gameOn = true;
 
     if (e.target.innerHTML === "X") {
-      playerChar.innerHTML = player = "X";
-      computerChar.innerHTML = computer = "O";
+      player = playerChar.innerHTML = "X";
+      computer = computerChar.innerHTML = computer = "O";
     }
     if (e.target.innerHTML === "O") {
-      playerChar.innerHTML = player = "O";
-      computerChar.innerHTML = computer = "X";
+      player = playerChar.innerHTML = player = "O";
+      computer = computerChar.innerHTML = "X";
     }
   }
 }
@@ -64,7 +62,7 @@ function choosePlayer(e) {
 grid.addEventListener('click', updateBoard, false);
 
 function updateBoard(e) {
-  if (e.target.className === "cell" && gameOn === true) {
+  if (e.target.className === "cell" ) {
     if (e.target.innerHTML !== player && e.target.innerHTML !== computer) {
 
       e.target.innerHTML = player;
@@ -210,12 +208,11 @@ function declareWinner() {
     } else if (winner(board, computer)) {
       winnerMsg.innerHTML = "<h2>Computer wins!</h2>";
       gameOn = false;
-    } else if (gameOn === true && validMoves().length === 0) {
+    } else if (validMoves().length === 0) {
       winnerMsg.innerHTML = "<h2>It's a draw!</h2>";
     }
   }
 }
-
 
 // reset game
 reset.addEventListener('click', function() {
