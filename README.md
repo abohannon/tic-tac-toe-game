@@ -1,14 +1,6 @@
 # tic-tac-toe-game
 Advanced front end project for Freecodecamp
 
-This project started fine but almost devolved into hopelessness. I was able to create a functional 2 (human) player game
-pretty quickly, but the AI really tested my limits. Initially I thought I could brute force my way through the AI moves,
-but 1) that seemed like a ton of unnecessary work and 2) I wanted a more eloquent solution. I ultimately settled on a loop
-that checked an array of moves against another array of possible win combos. This didn't quite work the way I wanted it to so
-I needed to add a couple if statements to make the game more difficult then I decided to submit it. Originally I thought it was
-necessary to create an unbeatable AI when this wasn't actually the case, so I spent hours upon hours reading about how to implement the 
-minimax algorithm. Despite understanding it conceptually, I wasn't able to quite wrap my head around it enough to write and implement it. Once I make more progress I'd like to revisit this project and update it using minimax. 
-
 Things I used/learned:
 
 - More about event bubbling
@@ -19,7 +11,8 @@ where I started to more clearly see the benefit of creating more functions for s
 
 Things I need to work on:
 
-- Psuedo coding my apps
+- Psuedo coding my apps before I begin
 - Not losing hope
 - Getting comfortable with more layers of abstraction
 - Get better at working with arrays and objects
+- Implementing minimax algo
